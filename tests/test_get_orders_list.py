@@ -1,6 +1,7 @@
 import requests
 import pytest
 from data import Url
+from constants import EXPECTED_STATUS_SUCCESS
 import allure
 
 
@@ -13,7 +14,7 @@ class TestGetOrdersList:
 
         response = requests.get(f'{Url.MAIN_URL}{Url.CREATE_ORDER}')
 
-        assert 200 == response.status_code, (
+        assert EXPECTED_STATUS_SUCCESS == response.status_code, (
             f'Ожидаемый статус-код: 200. '
             f'Фактический статус-код: {response.status_code}. '
         )

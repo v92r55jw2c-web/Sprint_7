@@ -1,38 +1,24 @@
 import requests
 import pytest
 from data import Url
+from constants import EXPECTED_STATUS_CREATED
 import allure
 
 class TestCreateOrder:
-    @pytest.mark.parametrize(
-        'color',
-        [
-            ['BLACK'],
-            ['GREY'],
-            ['BLACK', 'GREY']
-        ]
-    )
+
     @allure.title('Создание заказа с указанием цвета/цветов')
-    def test_create_order_with_color(self, color):
+    def test_create_order_with_color(self, order_with_color):
 
-        order_data = {
-            "firstName": "Оля",
-            "lastName": "Михеева",
-            "address": "Москва, улица Ленина, 1",
-            "metroStation": "Нахимовский проспект",
-            "phone": "+79991245867",
-            "rentTime": 2,
-            "deliveryDate": "2026-09-27",
-            "comment": "Позвонить перед доставкой",
-            "color": color
-        }
-
-        response = requests.post(f'{Url.MAIN_URL}{Url.CREATE_ORDER}', json=order_data)
+        track_id = order_with_color["track_id"]
+        response = order_with_color["response"]
         
-        assert 201 == response.status_code, (
+        assert EXPECTED_STATUS_CREATED == response.status_code, (
             f'Ожидаемый статус-код: 201. '
             f'Фактический статус-код: {response.status_code}. '
         )
+
+        assert track_id is not None
+
         assert 'track' in response.json(), (
             f'Ожидаемый результат: в теле ответа присутствует поле "track". '
             f'Фактический результат: тело ответа {response.text}. '
@@ -40,25 +26,18 @@ class TestCreateOrder:
 
 
     @allure.title('Создание заказа без указания цвета')
-    def test_create_order_without_color(self):
+    def test_create_order_without_color(self, order_without_color):
 
-        order_data = {
-            "firstName": "Оля",
-            "lastName": "Михеева",
-            "address": "Москва, улица Ленина, 1",
-            "metroStation": "Нахимовский проспект",
-            "phone": "+79991245867",
-            "rentTime": 2,
-            "deliveryDate": "2026-09-27",
-            "comment": "Позвонить перед доставкой"
-        }
-
-        response = requests.post(f'{Url.MAIN_URL}{Url.CREATE_ORDER}', json=order_data)
+        track_id = order_without_color["track_id"]
+        response = order_without_color["response"]
                 
-        assert 201 == response.status_code, (
+        assert EXPECTED_STATUS_CREATED == response.status_code, (
             f'Ожидаемый статус-код: 201. '
             f'Фактический статус-код: {response.status_code}. '
         )
+
+        assert track_id is not None
+
         assert 'track' in response.json(), (
             f'Ожидаемый результат: в теле ответа присутствует поле "track". '
             f'Фактический результат: тело ответа {response.text}. '

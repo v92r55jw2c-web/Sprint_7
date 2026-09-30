@@ -218,3 +218,32 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Файлы macOS
+.DS_Store
+._*
+
+# Файлы Windows
+Thumbs.db
+Desktop.ini
+
+# Папки настроек редакторов
+.vscode/
+.idea/
+
+# Виртуальное окружение (НИКОГДА не коммить!)
+.venv/
+venv/
+env/
+
+# Файлы кэша Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Allure отчеты (генерируются автоматически, не нужны в репозитории)
+allure-results/
+allure-report/
+
+# Логи
+*.log 
