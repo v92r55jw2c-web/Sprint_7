@@ -8,10 +8,9 @@ import allure
 class TestCreateCourier:
 
     @allure.title('Успешное создание курьера')
-    def test_create_courier_success(self):
-        courier_data = generate_courier_data()
-        
-        response = requests.post(f'{Url.MAIN_URL}{Url.CREATE_COURIER}', json=courier_data)
+    def test_create_courier_success(self, courier):
+
+        response = courier["response"]
 
         assert EXPECTED_STATUS_CREATED == response.status_code, (
             f'Ожидаемый статус-код: 201. '
@@ -24,9 +23,11 @@ class TestCreateCourier:
 
     @allure.title('Создание двух одинаковых курьеров')
     def test_create_duplicate_courier(self, courier):
-                
-        requests.post(f'{Url.MAIN_URL}{Url.CREATE_COURIER}', json=courier)
-        second_response = requests.post(f'{Url.MAIN_URL}{Url.CREATE_COURIER}', json=courier)
+
+        first_courier_data = courier['data'] 
+        
+        second_response = requests.post(f'{Url.MAIN_URL}{Url.CREATE_COURIER}', json=first_courier_data)
+        
         actual_message = second_response.json()["message"]
         
         assert EXPECTED_STATUS_CONFLICT == second_response.status_code, (
@@ -37,6 +38,7 @@ class TestCreateCourier:
             f'Ожидаемое сообщение в теле ответа содержит фразу MSG_LOGIN_DUPLICATE. '
             f'Фактическое сообщение в теле ответа: {actual_message}. '
         )
+
 
     @allure.title('Создание курьера без обязательного поля Логин')
     def test_withowt_login(self):
@@ -54,6 +56,7 @@ class TestCreateCourier:
             f'Ожидаемое сообщение в теле ответа содержит фразу MSG_ENOUGH_DATA_CREATE_ACCOUNT. '
             f'Фактическое сообщение в теле ответа: {actual_message}. '
         )
+
 
     @allure.title('Создание курьера без обязательного поля Пароль')
     def test_withowt_password(self):
@@ -76,7 +79,8 @@ class TestCreateCourier:
     @allure.title('Создание курьера с уже существующим логином')
     def test_create_duplicate_login(self, courier):
     
-        duplicate_courier = {'login': courier['login'], 'password': 'nvjfjmdh7659', 'firstName': 'Kapulka'}
+        duplicate_courier = {'login': courier['data']['login'], 'password': 'nvjfjmdh7659', 'firstName': 'Kapulka'}
+        
         response = requests.post(f'{Url.MAIN_URL}{Url.CREATE_COURIER}', json=duplicate_courier)
         actual_message = response.json()["message"]
 

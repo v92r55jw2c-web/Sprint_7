@@ -14,4 +14,5 @@ MSG_LOGIN_DUPLICATE = "Этот логин уже используется"
 MSG_ENOUGH_DATA_CREATE_ACCOUNT = "Недостаточно данных для создания учетной записи"
 MSG_NOT_FOUND_ACCOUNT = "Учетная запись не найдена"
 LITTLE_DATA_FOR_LOGIN = "Недостаточно данных для входа"
+MSG_SERVICE_UNAVAIBLE = 'service unavailable'
 
