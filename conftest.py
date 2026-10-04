@@ -9,8 +9,10 @@ from faker import Faker
 def courier():
     courier_data = generate_courier_data()
     response = requests.post(f'{Url.MAIN_URL}{Url.CREATE_COURIER}', json=courier_data)
+    
+    login_response = requests.post( f'{Url.MAIN_URL}{Url.LOGIN_COURIER}', json={ 'login': courier_data['login'], 'password': courier_data['password']})
 
-    courier_id = response.json().get('id') or courier_data['login']
+    courier_id = login_response.json()['id']
 
     yield {
         "data": courier_data,
